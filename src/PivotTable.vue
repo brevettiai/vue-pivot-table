@@ -60,11 +60,22 @@
               <!-- Single slot/no slot -->
               <tr v-else>
                 <!-- Top left dead zone -->
+
+                <template v-if="colFieldIndex === 0">
                 <th
-                  v-if="colFieldIndex === firstColFieldHeaderIndex && rowHeaderSize > 0"
-                  :colspan="rowHeaderSize"
+                  v-for="(row, rowIndex) in internalRowFields"
+                  :key="JSON.stringify(row.key)"
                   :rowspan="colHeaderSize"
-                  ></th>
+                  >
+                  <slot v-if="row.headerSlotName" :name="row.headerSlotName">
+                    Missing slot <code>{{ row.headerSlotName }}</code>
+                  </slot>
+                  <template v-else>
+                    {{ row.label }}
+                  </template>
+                </th>
+                </template>
+                
                 <!-- Column headers -->
                 <th
                   v-for="(col, colIndex) in sortedCols"
@@ -79,6 +90,11 @@
                     {{ col[colFieldIndex] }}
                   </template>
                 </th>
+                <!-- Totals column -->
+                <th 
+                  v-if="colFieldIndex === 0"
+                  :rowspan="colHeaderSize"
+                  >Total</th>
                 <!-- Top right dead zone -->
                 <th
                   v-if="colFieldIndex === firstColFieldHeaderIndex && rowFooterSize > 0"
@@ -123,8 +139,11 @@
                 :key="JSON.stringify(col)"
                 class="text-right"
                 >
-                <slot v-if="$scopedSlots.value" name="value" :value="value(row, col)" :row="Object.values(row)" :col="Object.values(col)" />
+                <slot v-if="$scopedSlots.value" name="value" :value="value(row, col)" :row="Object.values(row)" :col="Object.values(col)" :rowtotal="value(row)" />
                 <template v-else>{{ value(row, col) }}</template>
+              </td>
+              <td v-if="sortedCols[0].length > 0" >
+                <slot v-if="$scopedSlots.value" name="value" :value="value(row)" :row="Object.values(row)" :col="undefined" />
               </td>
               <!-- Row footers (if slots are provided) -->
               <template
@@ -357,8 +376,8 @@ export default {
   },
   methods: {
     // Get value from valuesHashTable
-    value: function(row, col) {
-      return this.valuesHashTable.get([...row, ...col]) || 0
+    value: function(row, col = []) {
+      return this.valuesHashTable.get([...row,...col]) || 0
     },
     // Get colspan/rowspan size
     spanSize: function(values, valueIndex, fieldIndex) {
@@ -444,9 +463,13 @@ export default {
             const previousValue = valuesHashTable.get(key) || 0
 
             valuesHashTable.set(key, this.reducer(previousValue, item))
+
+            if (colKey.length != 0) {
+              const previousValueTotal = valuesHashTable.get(rowKey) || 0
+              valuesHashTable.set(rowKey, this.reducer(previousValueTotal, item))
+            }
           }
         })
-
         this.rows = rows
         this.cols = cols
         if (updateValuesHashTable) this.valuesHashTable = valuesHashTable

@@ -14,166 +14,109 @@
         :reducer="reducer"
         :default-show-settings="defaultShowSettings"
       >
-        <template v-slot:value="{ value }">
-          {{ value | number }}
-        </template>
-        <template v-slot:countryFlagHeader="{ value }">
-          <span :class="`flag-icon flag-icon-${countryCode(value)}`"></span>
-        </template>
-        <template v-slot:countryNameHeader="{ value }">
-          {{ value | capitalize }}
-        </template>
-        <template v-slot:genderHeader="{ value }">
-          <svg v-if="value == 'female'" aria-hidden="true" data-prefix="fas" data-icon="venus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512" class="svg-inline--fa fa-venus fa-fw"><path fill="currentColor" d="M288 176c0-79.5-64.5-144-144-144S0 96.5 0 176c0 68.5 47.9 125.9 112 140.4V368H76c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h36v36c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-36h36c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-36v-51.6c64.1-14.5 112-71.9 112-140.4zm-224 0c0-44.1 35.9-80 80-80s80 35.9 80 80-35.9 80-80 80-80-35.9-80-80z" class=""></path></svg>
-          <svg v-else-if="value == 'male'" aria-hidden="true" data-prefix="fas" data-icon="mars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="svg-inline--fa fa-mars fa-fw"><path fill="currentColor" d="M372 64h-79c-10.7 0-16 12.9-8.5 20.5l16.9 16.9-80.7 80.7c-22.2-14-48.5-22.1-76.7-22.1C64.5 160 0 224.5 0 304s64.5 144 144 144 144-64.5 144-144c0-28.2-8.1-54.5-22.1-76.7l80.7-80.7 16.9 16.9c7.6 7.6 20.5 2.2 20.5-8.5V76c0-6.6-5.4-12-12-12zM144 384c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z" class=""></path></svg>
-          {{ value | capitalize }}
-        </template>
-        <template v-slot:computing>
-          <div class="position-absolute w-100 h-100 text-center" style="z-index: 1;">
-            <div class="position-sticky bg-white d-inline-block mt-5 p-3" style="top: 0;">
-              <svg aria-hidden="true" data-prefix="fas" data-icon="spinner" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-spinner fa-fw fa-pulse"><path fill="currentColor" d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z" class=""></path></svg>
-              Loading table values...
-            </div>
-          </div>
-        </template>
-      </pivot>
-    </div>
-
-    <h2 class="border-bottom pb-2 mb-4">PivotTable <small>(standalone)</small></h2>
-
-    <div class="mb-5">
-      <pivot-table
-        :data="asyncData"
-        :row-fields="rowFields"
-        :col-fields="colFields"
-        :reducer="reducer"
-        :default-show-settings="defaultShowSettings"
-        :is-data-loading="isDataLoading"
-      >
-        <template v-slot:value="{ value }">
-          {{ value | number }}
-        </template>
-        <template v-slot:countryFlagHeader="{ value }">
-          <span :class="`flag-icon flag-icon-${countryCode(value)}`"></span>
-        </template>
-        <template v-slot:countryNameHeader="{ value }">
-          {{ value | capitalize }}
-        </template>
-        <template v-slot:genderHeader="{ value }">
-          <svg v-if="value == 'female'" aria-hidden="true" data-prefix="fas" data-icon="venus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512" class="svg-inline--fa fa-venus fa-fw"><path fill="currentColor" d="M288 176c0-79.5-64.5-144-144-144S0 96.5 0 176c0 68.5 47.9 125.9 112 140.4V368H76c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h36v36c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-36h36c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-36v-51.6c64.1-14.5 112-71.9 112-140.4zm-224 0c0-44.1 35.9-80 80-80s80 35.9 80 80-35.9 80-80 80-80-35.9-80-80z" class=""></path></svg>
-          <svg v-else-if="value == 'male'" aria-hidden="true" data-prefix="fas" data-icon="mars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="svg-inline--fa fa-mars fa-fw"><path fill="currentColor" d="M372 64h-79c-10.7 0-16 12.9-8.5 20.5l16.9 16.9-80.7 80.7c-22.2-14-48.5-22.1-76.7-22.1C64.5 160 0 224.5 0 304s64.5 144 144 144 144-64.5 144-144c0-28.2-8.1-54.5-22.1-76.7l80.7-80.7 16.9 16.9c7.6 7.6 20.5 2.2 20.5-8.5V76c0-6.6-5.4-12-12-12zM144 384c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z" class=""></path></svg>
-          {{ value | capitalize }}
-        </template>
-        <template v-slot:loading>
-          <div class="text-center">
+      <template v-slot:values="{ value, row, col, rowtotal}">
+        {{ (value[1] || 0 ) | number }}
+      </template>
+      <template v-slot:value="{ value, row, col, rowtotal}">
+        <p v-if="rowtotal !== undefined && col.length > 0">
+          {{ ((value[1] || 0 ) / (rowtotal[1] || 1 )) | percent }}
+        </p>
+        <p v-else>
+          {{ (value[1] || 0 ) | number }}
+        </p>
+      </template>
+      <template  v-slot:datasetLinkHeader="{ value }">
+          <a :href="`${dataset_link(value)}`">{{ dataset_name(value) }}</a>
+      </template>
+      <template  v-slot:datasetHeader="{ value }">
+          {{ dataset_name(value) }}
+      </template>
+      <template v-slot:computing>
+        <div class="position-absolute w-100 h-100 text-center" style="z-index: 1;">
+          <div class="position-sticky bg-white d-inline-block mt-5 p-3" style="top: 0;">
             <svg aria-hidden="true" data-prefix="fas" data-icon="spinner" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-spinner fa-fw fa-pulse"><path fill="currentColor" d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z" class=""></path></svg>
-            Loading...
+            Loading table values...
           </div>
-        </template>
-        <template v-slot:computing>
-          <div class="position-absolute w-100 h-100 text-center" style="z-index: 1;">
-            <div class="position-sticky bg-white d-inline-block mt-5 p-3" style="top: 0;">
-              <svg aria-hidden="true" data-prefix="fas" data-icon="spinner" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-spinner fa-fw fa-pulse"><path fill="currentColor" d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z" class=""></path></svg>
-              Loading table values...
-            </div>
-          </div>
-        </template>
-      </pivot-table>
+        </div>
+      </template>
+      </pivot>
     </div>
   </div>
 </template>
 
 <script>
 import Pivot from '../src/Pivot'
-import PivotTable from '../src/PivotTable'
 import data from './data'
 import 'flag-icon-css/css/flag-icon.css'
 
+function listSort(order){
+  order = order.reduce((r, v, i) => {
+    r[v] = i+1;
+    return r;
+  }, {})
+  return (a, b) => (order[a] || Infinity) - (order[b] || Infinity)
+}
+
+data.fields.map(x => {
+	x.getter = o=>o[x.key]
+  x.valueFilter = true
+  if (Array.isArray(x.sort)){
+  	x.sort = listSort(x.sort)
+  }
+  if (x.key==="dataset_id"){
+  	x.label = "Dataset"
+    x.valueFilterSlotName = "datasetHeader"
+  	x.headers = [{
+      slotName: 'datasetLinkHeader',
+      label: 'Dataset',
+      checked: true
+    }]
+  }
+})
+
 export default {
   name: 'app',
-  components: { Pivot, PivotTable },
+  components: {Pivot},
   data: () => {
     return {
-      data: data,
+      data: Object.freeze(data),
       asyncData: [],
 
       // Pivot params
-      fields: [{
-        key: 'country',
-        getter: item => item.country,
-        label: 'Country',
-        headers: [{
-          slotName: 'countryFlagHeader',
-          label: 'Flag',
-          checked: true
-        }, {
-          slotName: 'countryNameHeader',
-          label: 'Name',
-          checked: true
-        }],
-        headerAttributeFilter: true,
-        valueFilter: true
-      }, {
-        key: 'gender',
-        getter: item => item.gender,
-        label: 'Gender',
-        headerSlotName: 'genderHeader',
-        valueFilter: true,
-        valueFilterSlotName: 'genderHeader'
-      }, {
-        key: 'year',
-        getter: item => item.year,
-        label: 'Year',
-        valueFilter: true
-      }],
-      availableFieldKeys: [],
-      rowFieldKeys: ['country', 'gender'],
-      colFieldKeys: ['year'],
-      reducer: (sum, item) => sum + item.count,
+      fields: data.fields,
+      availableFieldKeys: data.fields.map(x=> x.key),
+      rowFieldKeys: data.rowFieldKeys,
+      colFieldKeys: data.colFieldKeys,
+      reducer: (cum, el) => {
+          if (!Array.isArray(cum)) {
+          	cum = [new Set(), cum]
+          }
+          if (!cum[0].has(el.id)) {
+              cum[0].add(el.id)
+              cum[1] += el.count || 1
+          }
+          return cum
+      },
       defaultShowSettings: true,
-      isDataLoading: false,
-
-      // Pivot table standalone field params
-      rowFields: [{
-        getter: item => item.country,
-        label: 'Country',
-        headerSlotNames: ['countryFlagHeader', 'countryNameHeader']
-      }, {
-        getter: item => item.gender,
-        label: 'Gender',
-        headerSlotName: 'genderHeader'
-      }],
-      colFields: [{
-        getter: item => item.year,
-        label: 'Year'
-      }]
+      isDataLoading: false
     }
   },
   methods: {
-    countryCode: function(country) {
-      switch (country) {
-        case 'Australia':
-          return 'au'
-        case 'China':
-          return 'cn'
-        case 'France':
-          return 'fr'
-        case 'India':
-          return 'in'
-        case 'United States':
-          return 'us'
-      }
-    }
+    dataset_link: function(id) {
+      return id
+    },
+    dataset_name: function(id) {
+    	return "Dataset - " + id
+    },
   },
   created: function() {
-    // Simulate async data loading
-    this.isDataLoading = true
-    setTimeout(() => {
-      this.asyncData = data
-      this.isDataLoading = false
-    }, 3000)
+    this.asyncData = data.data  
   },
   filters: {
+    percent: function(value) {
+
+      return value.toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 2})
+    },
     number: function(value) {
       return value.toLocaleString()
     },
